@@ -384,3 +384,6 @@ obj-$(CONFIG_SND_SOC_TAS2557) += snd-soc-tas2557.o
 # TODO: remove me b/62058353
 subdir-ccflags-y += \
 	-Wno-enum-conversion
+
+# FauxSound Control3
+obj-$(CONFIG_SOUND_CONTROL_HAX_3_GPL) += sound_control_3_gpl.o
