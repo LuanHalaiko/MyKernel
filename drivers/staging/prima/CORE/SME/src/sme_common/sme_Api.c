@@ -901,6 +901,36 @@ static void smeProcessNanReq(tpAniSirGlobal pMac, tSmeCmd *pCommand )
     }
 }
 
+/**
+ * sme_set_qpower() - Set Qpower
+ * @pMac - context handler
+ * @enable - uint8 value that needs to be sent to FW
+ *
+ * The function sends the qpower to firmware received
+ * via driver command
+ */
+void sme_set_qpower(tpAniSirGlobal pMac, uint8_t enable)
+{
+    tSirMsgQ msgQ;
+    tSirRetStatus retCode = eSIR_SUCCESS;
+
+    vos_mem_zero(&msgQ, sizeof(tSirMsgQ));
+    msgQ.type = WDA_QPOWER;
+    msgQ.reserved = 0;
+    msgQ.bodyval = enable;
+
+    retCode = wdaPostCtrlMsg(pMac, &msgQ);
+    if(eSIR_SUCCESS != retCode)
+    {
+        smsLog(pMac, LOGE,
+           FL("Posting WDA_QPOWER to WDA failed, reason=%X"),
+           retCode);
+    }
+    else
+    {
+        smsLog(pMac, LOG1, FL("posted WDA_QPOWER command"));
+    }
+}
 
 /**
  * sme_set_vowifi_mode() - Set VOWIFI mode
@@ -1572,9 +1602,7 @@ eHalStatus sme_Open(tHalHandle hHal)
 
       sme_p2pOpen(pMac);
       smeTraceInit(pMac);
-#ifdef SME_TRACE_RECORD
       sme_register_debug_callback();
-#endif
 
    }while (0);
 
@@ -6970,7 +6998,7 @@ VOS_STATUS sme_DbgWriteMemory(tHalHandle hHal, v_U32_t memAddr, v_U8_t *pBuf, v_
    return (status);
 }
 
-#ifdef WLAN_DEBUG
+
 void pmcLog(tpAniSirGlobal pMac, tANI_U32 loglevel, const char *pString, ...)
 {
     VOS_TRACE_LEVEL  vosDebugLevel;
@@ -6991,6 +7019,7 @@ void pmcLog(tpAniSirGlobal pMac, tANI_U32 loglevel, const char *pString, ...)
 
 void smsLog(tpAniSirGlobal pMac, tANI_U32 loglevel, const char *pString,...)
 {
+#ifdef WLAN_DEBUG
     // Verify against current log level
     if ( loglevel > pMac->utils.gLogDbgLevel[LOG_INDEX_FOR_MODULE( SIR_SMS_MODULE_ID )] )
         return;
@@ -7004,8 +7033,8 @@ void smsLog(tpAniSirGlobal pMac, tANI_U32 loglevel, const char *pString,...)
 
         va_end( marker );              /* Reset variable arguments.      */
     }
-}
 #endif
+}
 
 /* ---------------------------------------------------------------------------
     \fn sme_GetWcnssWlanCompiledVersion
@@ -14261,7 +14290,7 @@ tANI_BOOLEAN sme_handleSetFccChannel(tHalHandle hHal, tANI_U8 fcc_constraint,
             pMac->scan.defer_update_channel_list = true;
         } else {
             /* update the channel list to the firmware */
-            csrUpdateChannelList(pMac);
+            csrUpdateFCCChannelList(pMac);
         }
     }
 

@@ -12061,6 +12061,27 @@ VOS_STATUS WDA_RemBeaconFilterReq(tWDA_CbContext *pWDA,
    return status;
 }
 
+VOS_STATUS WDA_set_qpower(tWDA_CbContext *pWDA,
+                 uint8_t enable)
+{
+    WDI_Status status;
+
+    VOS_TRACE( VOS_MODULE_ID_WDA, VOS_TRACE_LEVEL_INFO,
+                   FL("---> %s"), __func__);
+    status = WDI_set_qpower(enable);
+    if (status == WDI_STATUS_PENDING)
+    {
+       VOS_TRACE(VOS_MODULE_ID_WDA, VOS_TRACE_LEVEL_INFO,
+                 FL("pending status received "));
+    }
+    else if (status != WDI_STATUS_SUCCESS)
+    {
+       VOS_TRACE(VOS_MODULE_ID_WDA, VOS_TRACE_LEVEL_ERROR,
+               FL("Failure status %d"), status);
+    }
+    return CONVERT_WDI2VOS_STATUS(status);
+}
+
 VOS_STATUS WDA_set_vowifi_ind(tWDA_CbContext *pWDA,
                  tANI_BOOLEAN enable)
 {
@@ -14971,7 +14992,7 @@ VOS_STATUS WDA_TxPacket(tWDA_CbContext *pWDA,
 
    /* Divert Disassoc/Deauth frames thru self station, as by the time unicast
       disassoc frame reaches the HW, HAL has already deleted the peer station */
-   if ((pFc->type == SIR_MAC_MGMT_FRAME))
+   if (pFc->type == SIR_MAC_MGMT_FRAME)
    {
        if ((pFc->subType == SIR_MAC_MGMT_REASSOC_RSP) ||
                (pFc->subType == SIR_MAC_MGMT_PROBE_REQ))
@@ -17119,6 +17140,14 @@ VOS_STATUS WDA_McProcessMsg( v_CONTEXT_t pVosContext, vos_msg_t *pMsg )
                            "Handling msg type WDA_VOWIFI_MODE");
 
          WDA_set_vowifi_ind(pWDA, pMsg->bodyval);
+         break;
+      }
+
+      case WDA_QPOWER:
+      {
+         VOS_TRACE(VOS_MODULE_ID_WDA, VOS_TRACE_LEVEL_INFO_HIGH,
+                   "Handling msg type WDA_QPOWER");
+                   WDA_set_qpower(pWDA, pMsg->bodyval);
          break;
       }
 
