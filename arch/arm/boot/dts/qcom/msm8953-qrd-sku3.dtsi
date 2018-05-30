@@ -88,60 +88,49 @@
 	status = "ok";
 	qpnp,qpnp-labibb-mode = "lcd";
 };
+
 &dsi_nt35532_fhd_c6lite_vid {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
-
 };
 
 &dsi_nt35596_tianma_fhd_c6lite_vid {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
-
 };
 
 &dsi_otm1911_fhd_c6lite_vid {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
-
 };
 
 &dsi_r63350_ebbg_fhd_c6lite_vid {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
-
 };
 
 &dsi_ili7807_fhd_vid {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
-
 };
-
 
 &dsi_ft8716_fhd_vid {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
-
 };
 
 &dsi_otm1911_fhd_vid {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
-
 };
 
 &dsi_td4310_fhd_vid {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
-
 };
 
 &dsi_nt35532_fhd_vid {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
-
 };
 
 &dsi_nt35596_fhd_vid {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
-
 };
 
 &dsi_nt35596_tianma_fhd_vid {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
-
 };
 
 &dsi_r69006_1080p_cmd {
