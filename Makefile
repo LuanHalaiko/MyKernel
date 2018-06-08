@@ -706,7 +706,7 @@ ifdef CONFIG_KCOV
   endif
 endif
 
-ifeq ($(cc-name),clang)
+ifeq ($(COMPILER),clang)
 KBUILD_CPPFLAGS += $(call cc-option,-Qunused-arguments,)
 KBUILD_CFLAGS += $(call cc-disable-warning, unused-variable)
 KBUILD_CFLAGS += $(call cc-disable-warning, format-invalid-specifier)
